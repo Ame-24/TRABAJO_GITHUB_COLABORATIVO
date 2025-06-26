@@ -251,5 +251,11 @@ public class Club
         if (socio.darAutorizados().size() > 1) return "MAS_DE_UN_AUTORIZADO";
         return "SE_PUEDE_ELIMINAR";
     }
-
+    // Método 3: Eliminar socio
+    public void eliminarSocio(String cedula) {
+        Socio s = buscarSocio(cedula);
+        if (s != null) {
+            socios.remove(s);
+        }
+    }
 }
