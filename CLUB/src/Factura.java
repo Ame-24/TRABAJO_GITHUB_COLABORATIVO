@@ -3,10 +3,10 @@ public class Factura {
     private double valor;
     private String nombre;
 
-    public Factura(String pNombre, String pConcepto, double pValor) {
-        nombre = pNombre;
-        concepto = pConcepto;
-        valor = pValor;
+    public Factura(String nombre, String concepto, double valor) {
+        this.nombre = nombre;
+        this.concepto = concepto;
+        this.valor = valor;
     }
 
     public String darConcepto() {
@@ -22,6 +22,5 @@ public class Factura {
     }
 
     public String toString() {
-        return concepto + "    $" + String.format("%.2f", valor) + "    (" + nombre + ")";
+        return concepto + " - $" + valor + " - Consumido por: " + nombre;
     }
-}
