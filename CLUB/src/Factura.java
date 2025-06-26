@@ -24,3 +24,4 @@ public class Factura {
     public String toString() {
         return concepto + " - $" + valor + " - Consumido por: " + nombre;
     }
+}
