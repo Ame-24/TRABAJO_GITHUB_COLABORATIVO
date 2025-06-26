@@ -1,4 +1,3 @@
-package club;
 
 import java.util.Scanner;
 import club.Socio.Tipo;
@@ -53,6 +52,5 @@ public class Main {
 
         } while (op != 6);
 
-    1234, 4567
     }
 }
