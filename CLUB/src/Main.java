@@ -53,6 +53,6 @@ public class Main {
 
         } while (op != 6);
 
-    1234
+    1234, 4567
     }
 }
