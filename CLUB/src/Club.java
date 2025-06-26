@@ -242,6 +242,21 @@ public class Club
     {
         return "respuesta2";
     }
+
+    // Metodo 1: Total de consumos por cédula
+    public double totalConsumosSocio(String cedula) {
+        Socio socio = buscarSocio(cedula);
+        if (socio == null) {
+            System.out.println("No existe un socio con la cédula dada.");
+            return -1;
+        }
+        double total = 0;
+        for (Factura f : socio.darFacturas()) {
+            total += f.darValor();
+        }
+        return total;
+    }
+
     // Método 2: Verificar si se puede eliminar un socio
     public String sePuedeEliminarSocio(String cedula) {
         Socio socio = buscarSocio(cedula);
