@@ -1,4 +1,3 @@
-package club;
 
 import java.util.Scanner;
 import club.Socio.Tipo;
