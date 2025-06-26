@@ -242,6 +242,7 @@ public class Club
     {
         return "respuesta2";
     }
+    // Método 2: Verificar si se puede eliminar un socio
     public String sePuedeEliminarSocio(String cedula) {
         Socio socio = buscarSocio(cedula);
         if (socio == null) return "NO_EXISTE_SOCIO";
