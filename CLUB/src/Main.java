@@ -32,3 +32,65 @@ public class Main {
                         club.afiliarSocio(ced, nom, Socio.Tipo.valueOf(tipo.toUpperCase()));
                         System.out.println("Socio afiliado.");
                         break;
+                    case 2:
+                        System.out.print("Cédula del socio: ");
+                        Socio s = club.buscarSocio(sc.nextLine());
+                        System.out.print("Nombre autorizado: ");
+                        s.agregarAutorizado(sc.nextLine());
+                        System.out.println("Autorizado agregado.");
+                        break;
+
+                    case 3:
+                        System.out.print("Cédula socio: ");
+                        Socio s2 = club.buscarSocio(sc.nextLine());
+                        System.out.print("Nombre consumidor: ");
+                        String nombreConsumo = sc.nextLine();
+                        System.out.print("Concepto: ");
+                        String concepto = sc.nextLine();
+                        System.out.print("Valor: ");
+                        double valor = sc.nextDouble();
+                        s2.registrarConsumo(nombreConsumo, concepto, valor);
+                        System.out.println("Consumo registrado.");
+                        break;
+
+                    case 4:
+                        System.out.print("Cédula socio: ");
+                        Socio s3 = club.buscarSocio(sc.nextLine());
+                        for (int i = 0; i < s3.darFacturas().size(); i++) {
+                            System.out.println(i + ". " + s3.darFacturas().get(i));
+                        }
+                        System.out.print("Factura a pagar (índice): ");
+                        int idx = sc.nextInt();
+                        s3.pagarFactura(idx);
+                        System.out.println("Factura pagada.");
+                        break;
+
+                    case 5:
+                        System.out.print("Cédula socio: ");
+                        Socio s4 = club.buscarSocio(sc.nextLine());
+                        System.out.print("Monto: ");
+                        double monto = sc.nextDouble();
+                        s4.aumentarFondos(monto);
+                        System.out.println("Fondos aumentados.");
+                        break;
+
+                    case 6:
+                        System.out.print("Cédula socio: ");
+                        System.out.println("Total consumos: $" + club.totalConsumosSocio(sc.nextLine()));
+                        break;
+
+                    case 7:
+                        System.out.print("Cédula socio: ");
+                        System.out.println(club.sePuedeEliminarSocio(sc.nextLine()));
+                        break;
+                }
+
+            } catch (Exception e) {
+                System.out.println("⚠️ Error: " + e.getMessage());
+            }
+
+        } while (opcion != 0);
+
+        sc.close();
+    }
+}
