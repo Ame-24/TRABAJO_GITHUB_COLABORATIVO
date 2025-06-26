@@ -12,7 +12,7 @@ public class Main {
         int op;
         Club c = new Club();
 
-        do{
+        do {
             System.out.println("1. Afiliar un socio al club.");
             System.out.println("2. Registrar una persona autorizada por un socio.");
             System.out.println("3. Pagar una factura.");
@@ -21,34 +21,38 @@ public class Main {
             System.out.println("6. Salir");
             System.out.print("Ingrese una opcion: ");
             op = Integer.parseInt(sc.next());
-            switch (op){
-                case 1:{
+            switch (op) {
+                case 1: {
 
 
+                }
+                break;
+                case 2: {
 
+                }
+                break;
+                case 3: {
 
-                }break;
-                case 2:{
+                }
+                break;
+                case 4: {
 
-                }break;
-                case 3:{
+                }
+                break;
+                case 5: {
 
-                }break;
-                case 4:{
-
-                }break;
-                case 5:{
-
-                }break;
-                case 6:{
+                }
+                break;
+                case 6: {
                     System.out.println("Gracias!");
-                }break;
+                }
+                break;
                 default:
                     System.out.println("opcion invalida");
             }
 
-        }while(op!=6);
+        } while (op != 6);
 
-jdwfefgrefoewf8wedsggfvtrdrtftf
+    1234
     }
 }
