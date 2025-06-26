@@ -242,4 +242,11 @@ public class Club
     {
         return "respuesta2";
     }
+
+    public void eliminarSocio(String cedula) {
+        Socio s = buscarSocio(cedula);
+        if (s != null) {
+            socios.remove(s);
+        }
+    }
 }
