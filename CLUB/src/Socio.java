@@ -1,14 +1,12 @@
 import java.util.ArrayList;
 
 public class Socio {
-    public enum Tipo {
-        VIP, REGULAR
-    }
+    public enum Tipo { VIP, REGULAR }
 
-    public static final double FONDOS_INICIALES_REGULARES = 50;
-    public static final double FONDOS_INICIALES_VIP = 100;
-    public static final double MONTO_MAXIMO_REGULARES = 1000;
-    public static final double MONTO_MAXIMO_VIP = 5000;
+    public static final double FONDOS_INICIALES_REGULARES = 50000;
+    public static final double FONDOS_INICIALES_VIP = 100000;
+    public static final double MONTO_MAXIMO_REGULARES = 1000000;
+    public static final double MONTO_MAXIMO_VIP = 5000000;
 
     private String cedula;
     private String nombre;
@@ -17,117 +15,84 @@ public class Socio {
     private ArrayList<Factura> facturas;
     private ArrayList<String> autorizados;
 
-    public Socio(String pCedula, String pNombre, Tipo pTipo) {
-        cedula = pCedula;
-        nombre = pNombre;
-        tipoSubscripcion = pTipo;
+    public Socio(String cedula, String nombre, Tipo tipo) {
+        this.cedula = cedula;
+        this.nombre = nombre;
+        this.tipoSubscripcion = tipo;
+        this.facturas = new ArrayList<>();
+        this.autorizados = new ArrayList<>();
 
-        if (tipoSubscripcion == Tipo.VIP)
-            fondos = FONDOS_INICIALES_VIP;
-        else
-            fondos = FONDOS_INICIALES_REGULARES;
-
-        facturas = new ArrayList<>();
-        autorizados = new ArrayList<>();
+        this.fondos = (tipo == Tipo.VIP) ? FONDOS_INICIALES_VIP : FONDOS_INICIALES_REGULARES;
     }
 
-    public String darNombre() {
-        return nombre;
+    public String darNombre() { return nombre; }
+    public String darCedula() { return cedula; }
+    public double darFondos() { return fondos; }
+    public Tipo darTipo() { return tipoSubscripcion; }
+    public ArrayList<Factura> darFacturas() { return facturas; }
+    public ArrayList<String> darAutorizados() { return autorizados; }
+
+    public void aumentarFondos(double monto) throws Exception {
+        if (monto <= 0) throw new Exception("El monto debe ser positivo.");
+
+        double nuevoTotal = fondos + monto;
+        if (tipoSubscripcion == Tipo.VIP && nuevoTotal > MONTO_MAXIMO_VIP)
+            throw new Exception("Excede el monto máximo para VIP.");
+        if (tipoSubscripcion == Tipo.REGULAR && nuevoTotal > MONTO_MAXIMO_REGULARES)
+            throw new Exception("Excede el monto máximo para Regular.");
+
+        fondos = nuevoTotal;
     }
 
-    public String darCedula() {
-        return cedula;
+    public void registrarConsumo(String nombre, String concepto, double valor) throws Exception {
+        if (valor > fondos)
+            throw new Exception("Fondos insuficientes para registrar consumo.");
+
+        facturas.add(new Factura(nombre, concepto, valor));
     }
 
-    public double darFondos() {
-        return fondos;
+    public void pagarFactura(int index) throws Exception {
+        if (index < 0 || index >= facturas.size())
+            throw new Exception("Índice de factura inválido.");
+
+        Factura f = facturas.get(index);
+        if (f.darValor() > fondos)
+            throw new Exception("Fondos insuficientes para pagar la factura.");
+
+        fondos -= f.darValor();
+        facturas.remove(index);
     }
 
-    public Tipo darTipo() {
-        return tipoSubscripcion;
+    public void agregarAutorizado(String nombre) throws Exception {
+        if (fondos == 0)
+            throw new Exception("No hay fondos suficientes para autorizar personas.");
+
+        if (nombre.equals(this.nombre))
+            throw new Exception("El socio no puede autorizarse a sí mismo.");
+
+        if (autorizados.contains(nombre))
+            throw new Exception("Ya existe esta persona autorizada.");
+
+        autorizados.add(nombre);
     }
 
-    public ArrayList<Factura> darFacturas() {
-        return facturas;
-    }
-
-    public ArrayList<String> darAutorizados() {
-        return autorizados;
-    }
-
-    private boolean existeAutorizado(String pNombreAutorizado) {
-        return autorizados.contains(pNombreAutorizado);
-    }
-
-    private boolean tieneFacturaAsociada(String pNombreAutorizado) {
+    public void eliminarAutorizado(String nombre) throws Exception {
         for (Factura f : facturas) {
-            if (f.darNombre().equals(pNombreAutorizado))
-                return true;
+            if (f.darNombre().equals(nombre))
+                throw new Exception("No se puede eliminar autorizado con facturas pendientes.");
         }
-        return false;
+        autorizados.remove(nombre);
     }
 
-    public void aumentarFondos(double pFondos) {
-        if (pFondos <= 0) {
-            System.out.println("Debe ingresar una cantidad mayor a cero.");
-            return;
+    public double calcularTotalConsumos() {
+        double total = 0;
+        for (Factura f : facturas) {
+            total += f.darValor();
         }
-
-        double nuevoTotal = fondos + pFondos;
-
-        if (tipoSubscripcion == Tipo.VIP && nuevoTotal > MONTO_MAXIMO_VIP) {
-            System.out.println("Excede el monto máximo para socio VIP.");
-        } else if (tipoSubscripcion == Tipo.REGULAR && nuevoTotal > MONTO_MAXIMO_REGULARES) {
-            System.out.println("Excede el monto máximo para socio regular.");
-        } else {
-            fondos = nuevoTotal;
-        }
-    }
-
-    public void registrarConsumo(String pNombre, String pConcepto, double pValor) {
-        if (pValor > fondos) {
-            System.out.println("Fondos insuficientes.");
-        } else {
-            facturas.add(new Factura(pNombre, pConcepto, pValor));
-        }
-    }
-
-    public void agregarAutorizado(String pNombreAutorizado) {
-        if (pNombreAutorizado.equals(nombre)) {
-            System.out.println("El socio no puede ser su propio autorizado.");
-        } else if (fondos == 0) {
-            System.out.println("No hay fondos disponibles.");
-        } else if (existeAutorizado(pNombreAutorizado)) {
-            System.out.println("Ya existe ese autorizado.");
-        } else {
-            autorizados.add(pNombreAutorizado);
-        }
-    }
-
-    public void eliminarAutorizado(String pNombreAutorizado) {
-        if (tieneFacturaAsociada(pNombreAutorizado)) {
-            System.out.println(pNombreAutorizado + " tiene facturas pendientes.");
-        } else {
-            autorizados.remove(pNombreAutorizado);
-        }
-    }
-
-    public void pagarFactura(int pIndiceFactura) {
-        if (pIndiceFactura < 0 || pIndiceFactura >= facturas.size()) {
-            System.out.println("Índice inválido.");
-            return;
-        }
-
-        Factura f = facturas.get(pIndiceFactura);
-        if (f.darValor() > fondos) {
-            System.out.println("Fondos insuficientes para pagar factura.");
-        } else {
-            fondos -= f.darValor();
-            facturas.remove(pIndiceFactura);
-        }
+        return total;
     }
 
     public String toString() {
-        return cedula + " - " + nombre;
+        return cedula + " - " + nombre + " - Tipo: " + tipoSubscripcion + " - Fondos: $" + fondos;
     }
 }
