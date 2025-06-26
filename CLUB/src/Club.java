@@ -243,7 +243,7 @@ public class Club
         return "respuesta2";
     }
 
-    // Método 1: Total de consumos por cédula
+    // Metodo 1: Total de consumos por cédula
     public double totalConsumosSocio(String cedula) {
         Socio socio = buscarSocio(cedula);
         if (socio == null) {
